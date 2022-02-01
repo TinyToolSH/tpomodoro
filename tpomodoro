@@ -30,6 +30,7 @@ TITLE="Pomodoro"
 
 # Pomodoro log file path
 LOG_FILE=$HOME/pomodoro.log
+ELAPSED_TIME_FILE=/tmp/tpomodoro
 
 ## MACOS PACKAGES ##
 
@@ -110,7 +111,7 @@ beep()
 
 convertsecs() {
   printf '%02d:%02d:%02d'\\r $((${1}/3600)) $((${1}%3600/60)) $((${1}%60))
-#printf "%02d:%02d:%02d"\\r $h $m $s
+  printf "$TIMER_TYPE %02d:%02d:%02d\n" $((${1}/3600)) $((${1}%3600/60)) $((${1}%60)) > $ELAPSED_TIME_FILE
 }
 
 # Ticker function
@@ -151,6 +152,7 @@ main()
   ticker
   notify "$TITLE" "$STOP_MESSAGE"
   echo "$$;$TITLE;$STOP_MESSAGE;$TIMER_TYPE;$TIME;$(date)" >> $LOG_FILE
+  echo "" > $ELAPSED_TIME_FILE
   beep
 }
 
